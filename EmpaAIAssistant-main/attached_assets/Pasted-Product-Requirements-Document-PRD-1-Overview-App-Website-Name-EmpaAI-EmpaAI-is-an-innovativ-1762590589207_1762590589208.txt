@@ -1,0 +1,370 @@
+Product Requirements Document (PRD)
+
+1. Overview
+
+App/Website Name: EmpaAI
+
+
+
+EmpaAI is an innovative AI-powered web application designed to foster inclusion, empathy, and accessibility by bridging communication gaps between disabled and non-disabled users. The platform leverages advanced artificial intelligence to detect sign language, analyze facial expressions, provide real-time speech-to-text conversion, and offer multilingual translation capabilities for users with hearing or speech impairments. Additionally, it provides emotional wellness support and lifestyle analysis for all users through AI-driven mood detection and personalized recommendations.
+
+
+
+The target audience includes individuals with hearing or speech disabilities seeking improved communication tools, as well as non-disabled users looking for emotional wellness support and lifestyle improvement guidance. The key problems addressed are real-time communication barriers faced by disabled individuals, lack of accessible communication tools, and unaddressed emotional wellness needs across all user demographics.
+
+2. Essential Core Features
+
+Authentication & User Classification
+
+User registration and login system with role-based access
+
+Disability status selection during registration (Disabled/Non-Disabled)
+
+Personalized interface routing based on user type
+
+Disabled User Features
+
+Real-time Video Processing: Upload or record videos directly in the browser
+
+Sign Language Detection: AI-powered recognition of sign language gestures with emoji visualization
+
+Facial Expression Analysis: Real-time emotion detection from video input
+
+Multilingual Translation: Audio translation to English, Kannada, and Hindi
+
+Speech-to-Text Captioning: YouTube-style real-time subtitle generation
+
+Transcript Download: Export generated captions as downloadable files
+
+Video Preview & Full-screen Mode: Expandable video player with responsive controls
+
+Non-Disabled User Features
+
+Lifestyle Questionnaire: Six interactive questions with personalized recommendations
+
+Data Visualization: Pie chart analytics for lifestyle trend analysis
+
+Webcam-based Mood Analysis: Real-time facial expression detection for mood assessment
+
+Wellness Recommendations: Pop-up suggestions for mood improvement and lifestyle balance
+
+Privacy Controls: Webcam toggle functionality for user privacy
+
+AI Integration
+
+OpenAI GPT-4o integration for text processing and recommendation generation
+
+Real-time AI model processing for sign language and emotion detection
+
+Intelligent mood analysis with personalized wellness suggestions
+
+3. Tech Stack
+
+Front-End
+
+Framework: React with TypeScript
+
+Styling: Tailwind CSS
+
+Build Tool: Vite
+
+Video Processing: WebRTC for camera access and video recording
+
+Back-End
+
+Database & Authentication: Supabase
+
+Real-time Features: Supabase Realtime
+
+File Storage: Supabase Storage for video uploads and transcripts
+
+AI Integration
+
+Text Processing: OpenAI GPT-4o for wellness recommendations and multilingual translation
+
+Computer Vision: Web-based ML models for sign language and emotion detection
+
+Speech Processing: Web Speech API for speech-to-text conversion
+
+APIs & Integrations
+
+WebRTC API: Camera and microphone access
+
+Canvas API: Video frame processing for AI analysis
+
+File System Access API: Download functionality for transcripts
+
+Web Speech API: Speech recognition and synthesis
+
+Technical Requirements
+
+Progressive Web App (PWA) capabilities for mobile accessibility
+
+Responsive design for cross-device compatibility
+
+Real-time data processing and visualization
+
+Secure file handling and user data protection
+
+4. Design Preferences
+
+Interface
+
+The design should emphasize accessibility with high contrast elements, clear typography, and intuitive navigation suitable for users with various abilities. The interface should be clean, modern, and welcoming with emphasis on visual clarity and ease of use.
+
+Color Palette
+
+Primary: #2563EB (Blue) - representing trust and accessibility
+
+Secondary: #10B981 (Emerald) - symbolizing growth and wellness
+
+Accent: #F59E0B (Amber) - for highlights and call-to-action elements
+
+Typography
+
+Headings: Inter font family for modern readability
+
+Body Text: System fonts (ui-sans-serif) for optimal accessibility across devices
+
+Design Considerations
+
+High contrast ratios for visual accessibility
+
+Large, touch-friendly interface elements
+
+Clear visual hierarchy with consistent spacing
+
+Loading states for AI processing operations
+
+Responsive design patterns for mobile and desktop
+
+5. All Screens/Pages
+
+/ - Landing Page
+
+UI Elements:
+
+Hero section with EmpaAI branding and mission statement
+
+Feature overview cards for both user types
+
+Call-to-action buttons for sign up and login
+
+Accessibility statement and navigation menu
+
+Navigation: Entry point to authentication flows
+
+/auth/signup - Registration Page
+
+UI Elements:
+
+Registration form (email, password, confirm password)
+
+User type selection radio buttons (Disabled/Non-Disabled)
+
+Terms of service and privacy policy checkboxes
+
+Submit button and login link
+
+Form validation messages
+
+Navigation: Routes to appropriate dashboard based on user type selection
+
+/auth/login - Login Page
+
+UI Elements:
+
+Login form (email, password)
+
+Remember me checkbox
+
+Forgot password link
+
+Submit button and signup link
+
+Social login options (if applicable)
+
+Navigation: Routes to user-specific dashboard after authentication
+
+/dashboard/disabled - Disabled User Dashboard
+
+UI Elements:
+
+Video upload/record component with preview (right corner)
+
+Sign language detection display with emoji visualization (left corner)
+
+Multilingual audio translation output (center)
+
+Real-time speech-to-text captions (below video)
+
+Download transcript button
+
+Full-screen video toggle
+
+Navigation menu and user profile access
+
+Navigation: Single-page interface with expandable sections
+
+/dashboard/non-disabled - Non-Disabled User Dashboard
+
+UI Elements:
+
+Lifestyle questionnaire form (left side, 6 questions)
+
+Webcam toggle switch
+
+Live webcam feed (when enabled)
+
+Mood analysis results display
+
+Wellness recommendation pop-ups
+
+Lifestyle analytics pie chart (bottom right)
+
+Navigation menu and user profile access
+
+Navigation: Interactive single-page dashboard with modal overlays
+
+/profile - User Profile Page
+
+UI Elements:
+
+User information display and edit forms
+
+Account settings and preferences
+
+Privacy controls
+
+Usage statistics and history
+
+Account deletion and data export options
+
+Back to dashboard navigation
+
+Navigation: Accessible from both dashboard types
+
+/help - Help & Accessibility Page
+
+UI Elements:
+
+Feature tutorials and guides
+
+Accessibility instructions
+
+FAQ sections
+
+Contact support form
+
+Video demonstrations
+
+Keyboard navigation guide
+
+Navigation: Available from main navigation menu
+
+6. App Menu and Navigation Structure
+
+Primary Navigation (Horizontal Navigation Bar)
+
+Logo/Brand: EmpaAI logo linking to dashboard
+
+Dashboard: Link to user-specific dashboard
+
+Help: Accessibility guides and support
+
+Profile: User account management
+
+Logout: Authentication termination
+
+Navigation Hierarchy
+
+EmpaAI Web Application
+├── Public Pages
+│   ├── Landing Page (/)
+│   ├── Login (/auth/login)
+│   └── Sign Up (/auth/signup)
+└── Authenticated Pages
+    ├── Disabled User Dashboard (/dashboard/disabled)
+    ├── Non-Disabled User Dashboard (/dashboard/non-disabled)
+    ├── Profile (/profile)
+    └── Help (/help)
+
+Responsive Navigation
+
+Desktop: Full horizontal navigation bar
+
+Tablet/Mobile: Hamburger menu with slide-out navigation
+
+High contrast mode toggle for accessibility
+
+Keyboard navigation support throughout
+
+7. User Flow
+
+Initial User Journey
+
+Landing Page Access: User visits EmpaAI website and views feature overview
+
+Account Creation: User clicks "Sign Up" and completes registration form
+
+User Type Selection: During signup, user selects "Disabled" or "Non-Disabled" status
+
+Email Verification: User confirms account via email verification (if required)
+
+First Login: User logs in and is automatically routed to appropriate dashboard
+
+Disabled User Workflow
+
+Dashboard Access: User lands on disabled user interface with all features visible
+
+Video Input: User either uploads existing video or records new video using webcam
+
+AI Processing: System automatically processes video for:
+
+Sign language gesture detection
+
+Facial expression analysis
+
+Audio extraction for translation
+
+Results Display:
+
+Sign language results appear with corresponding emojis (left corner)
+
+Multilingual translations display in center section
+
+Real-time captions appear below video
+
+Video Interaction: User can click video preview to expand to full-screen mode
+
+Export Options: User can download transcript using dedicated download button
+
+Repeat Process: User can upload/record additional videos as needed
+
+Non-Disabled User Workflow
+
+Dashboard Access: User lands on non-disabled interface with wellness features
+
+Lifestyle Assessment: User completes 6-question lifestyle questionnaire
+
+Initial Recommendations: System provides pop-up suggestions based on questionnaire responses
+
+Webcam Activation (Optional): User toggles webcam on for real-time mood analysis
+
+Mood Detection: AI analyzes facial expressions and provides mood assessment
+
+Wellness Suggestions: System displays personalized mood improvement recommendations
+
+Data Review: User views lifestyle analytics pie chart for trend insights
+
+Continuous Monitoring: User can keep webcam enabled for ongoing mood analysis or disable for privacy
+
+Cross-Platform Features
+
+Profile Management: Users can access profile settings to update preferences and view usage history
+
+Help Access: Users can access help documentation and tutorials at any time
+
+Data Privacy: Users can manage privacy settings and data retention preferences
+
+Session Management: Users can securely logout and manage active sessions across devices
