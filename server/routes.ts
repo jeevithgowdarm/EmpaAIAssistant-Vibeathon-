@@ -27,14 +27,18 @@ function requireAuth(req: Request, res: Response, next: Function) {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  app.set('trust proxy', 1);
+  
   app.use(
     session({
       secret: process.env.SESSION_SECRET || "empaai-secret-key-change-in-production",
       resave: false,
       saveUninitialized: false,
+      proxy: true,
       cookie: {
         secure: process.env.NODE_ENV === "production",
         httpOnly: true,
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       },
     })
@@ -68,6 +72,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       req.session.userId = user.id;
+      
+      await new Promise<void>((resolve, reject) => {
+        req.session.save((err) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
 
       const { password: _, ...userWithoutPassword } = user;
       res.json({ 
@@ -105,6 +116,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       req.session.userId = user.id;
+      
+      await new Promise<void>((resolve, reject) => {
+        req.session.save((err) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
 
       const { password: _, ...userWithoutPassword } = user;
       res.json({ 
