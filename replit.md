@@ -8,10 +8,10 @@ EmpaAI is an innovative web application designed to foster inclusion, empathy, a
 ### Tech Stack
 - **Frontend:** React 18 with TypeScript, Vite, Tailwind CSS, Shadcn UI
 - **Backend:** Express.js with TypeScript
-- **AI Integration:** OpenAI GPT-5 for wellness recommendations
-- **Storage:** In-memory storage (MemStorage)
-- **Authentication:** Session-based with localStorage
-- **Media Processing:** WebRTC for camera/microphone access, Web Speech API for speech-to-text
+- **Database:** PostgreSQL (Neon) with Drizzle ORM
+- **AI Integration:** OpenAI GPT-5 for wellness recommendations (with fallback)
+- **Authentication:** Session-based with PostgreSQL storage
+- **Media Processing:** WebRTC for camera/microphone access, Web Speech API for speech-to-text, face-api.js for facial expression detection
 
 ### Design System
 - **Primary Color:** #2563EB (Blue) - Trust and accessibility
@@ -204,6 +204,26 @@ EmpaAI is an innovative web application designed to foster inclusion, empathy, a
 - In-memory storage (data cleared on logout)
 - User-controlled camera/microphone access
 - Secure password handling (to be hashed in backend)
+
+## Replit Environment Setup (2025-11-09)
+- ✅ **GitHub Import Completed**: Successfully imported and configured for Replit environment
+- ✅ **Dependencies Installed**: All npm packages installed successfully
+- ✅ **Database Provisioned**: PostgreSQL database created and schema pushed via Drizzle
+- ✅ **Vite Configuration**: Configured to allow all hosts for Replit proxy (port 5000)
+- ✅ **OpenAI Graceful Fallback**: Modified to work without API key (uses fallback recommendations)
+- ✅ **Workflow Configured**: Development server running on port 5000 with webview output
+- ✅ **Deployment Configured**: Set up autoscale deployment with build and start commands
+- ✅ **Application Running**: Frontend accessible and fully functional
+
+### Environment Variables
+- `DATABASE_URL`: Auto-configured by Replit PostgreSQL
+- `OPENAI_API_KEY`: Optional (app works with fallback if not set)
+
+### Development
+- **Dev Server**: `npm run dev` (runs on port 5000)
+- **Build**: `npm run build`
+- **Production**: `npm start`
+- **Database Push**: `npm run db:push`
 
 ## Recent Changes
 

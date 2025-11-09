@@ -3,9 +3,9 @@ import OpenAI from "openai";
 // Using the javascript_openai blueprint
 // the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
 
-const openai = new OpenAI({ 
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({ 
   apiKey: process.env.OPENAI_API_KEY 
-});
+}) : null;
 
 interface QuestionnaireResponses {
   sleepHours: number;
@@ -43,6 +43,11 @@ Remember, sustainable wellness comes from small, consistent changes. Start with 
 export async function generateWellnessRecommendations(
   responses: QuestionnaireResponses
 ): Promise<string> {
+  if (!openai) {
+    console.warn("OpenAI API key not configured, using fallback recommendations");
+    return generateFallbackRecommendations(responses);
+  }
+
   try {
     const prompt = `As a wellness expert, analyze the following lifestyle data and provide personalized, actionable recommendations to improve overall wellbeing. Be empathetic, specific, and practical.
 
