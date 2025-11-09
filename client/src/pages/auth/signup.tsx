@@ -54,14 +54,15 @@ export default function Signup() {
       return result;
     },
     onSuccess: (data) => {
+      setStoredUser(data.user);
       toast({
-        title: "Account created!",
-        description: data.message || "Please check your email to verify your account.",
-        duration: 7000,
+        title: "Account created successfully!",
+        description: "Welcome to EmpaAI",
       });
-      setTimeout(() => {
-        setLocation("/auth/login");
-      }, 2000);
+      const redirectPath = data.user.userType === "disabled" 
+        ? "/dashboard/disabled" 
+        : "/dashboard/non-disabled";
+      setLocation(redirectPath);
     },
     onError: (error: Error) => {
       toast({

@@ -12,9 +12,6 @@ import { useEffect } from "react";
 import Landing from "@/pages/landing";
 import Signup from "@/pages/auth/signup";
 import Login from "@/pages/auth/login";
-import VerifyEmail from "@/pages/auth/verify-email";
-import ForgotPassword from "@/pages/auth/forgot-password";
-import ResetPassword from "@/pages/auth/reset-password";
 import DisabledDashboard from "@/pages/dashboard/disabled";
 import NonDisabledDashboard from "@/pages/dashboard/non-disabled";
 import Profile from "@/pages/profile";
@@ -59,9 +56,6 @@ function Router() {
       <Route path="/" component={Landing} />
       <Route path="/auth/signup" component={Signup} />
       <Route path="/auth/login" component={Login} />
-      <Route path="/verify-email" component={VerifyEmail} />
-      <Route path="/forgot-password" component={ForgotPassword} />
-      <Route path="/reset-password" component={ResetPassword} />
       <Route path="/dashboard/disabled">
         {() => <ProtectedRoute component={DisabledDashboard} />}
       </Route>
