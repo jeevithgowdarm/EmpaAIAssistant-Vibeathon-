@@ -214,10 +214,32 @@ EmpaAI is an innovative web application designed to foster inclusion, empathy, a
 - ✅ **Workflow Configured**: Development server running on port 5000 with webview output
 - ✅ **Deployment Configured**: Set up autoscale deployment with build and start commands
 - ✅ **Application Running**: Frontend accessible and fully functional
+- ✅ **Email Verification & Password Reset**: Implemented complete email verification and password reset flows
+
+### Email Verification & Password Reset (2025-11-09)
+- **Email Verification**: Users receive verification emails upon signup with 24-hour expiry tokens
+- **Password Reset**: Users can request password reset links with 1-hour expiry tokens
+- **Beautiful Email Templates**: Professional HTML emails with EmpaAI branding
+- **Dev Mode**: Works without SMTP configuration (prints links to console for testing)
+- **New Routes**:
+  - `/verify-email` - Email verification page
+  - `/forgot-password` - Request password reset page
+  - `/reset-password` - Reset password with token page
+- **Backend Routes**:
+  - `POST /api/auth/verify-email` - Verify email with token
+  - `POST /api/auth/resend-verification` - Resend verification email
+  - `POST /api/auth/request-password-reset` - Request password reset
+  - `POST /api/auth/reset-password` - Reset password with token
 
 ### Environment Variables
 - `DATABASE_URL`: Auto-configured by Replit PostgreSQL
 - `OPENAI_API_KEY`: Optional (app works with fallback if not set)
+- `SMTP_HOST`: Optional (for email sending, works without in dev mode)
+- `SMTP_PORT`: Optional (default: 587)
+- `SMTP_SECURE`: Optional (default: false)
+- `SMTP_USER`: Optional (email service username)
+- `SMTP_PASS`: Optional (email service password)
+- `SMTP_FROM`: Optional (sender email address)
 
 ### Development
 - **Dev Server**: `npm run dev` (runs on port 5000)

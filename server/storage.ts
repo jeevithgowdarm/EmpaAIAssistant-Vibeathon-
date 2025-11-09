@@ -21,8 +21,14 @@ import { eq } from "drizzle-orm";
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
+  getUserByVerificationToken(token: string): Promise<User | undefined>;
+  getUserByPasswordResetToken(token: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: string, updates: Partial<User>): Promise<User | undefined>;
+  verifyUserEmail(id: string): Promise<void>;
+  setEmailVerificationToken(id: string, token: string, expiry: Date): Promise<void>;
+  setPasswordResetToken(id: string, token: string, expiry: Date): Promise<void>;
+  resetUserPassword(id: string, hashedPassword: string): Promise<void>;
   
   createLifestyleQuestionnaire(questionnaire: InsertLifestyleQuestionnaire): Promise<LifestyleQuestionnaire>;
   getLifestyleQuestionnairesByUserId(userId: string): Promise<LifestyleQuestionnaire[]>;
@@ -65,6 +71,64 @@ export class DatabaseStorage implements IStorage {
       .where(eq(users.id, id))
       .returning();
     return user || undefined;
+  }
+
+  async getUserByVerificationToken(token: string): Promise<User | undefined> {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.emailVerificationToken, token));
+    return user || undefined;
+  }
+
+  async getUserByPasswordResetToken(token: string): Promise<User | undefined> {
+    const [user] = await db
+      .select()
+      .from(users)
+      .where(eq(users.passwordResetToken, token));
+    return user || undefined;
+  }
+
+  async verifyUserEmail(id: string): Promise<void> {
+    await db
+      .update(users)
+      .set({
+        emailVerified: true,
+        emailVerificationToken: null,
+        emailVerificationExpiry: null,
+      })
+      .where(eq(users.id, id));
+  }
+
+  async setEmailVerificationToken(id: string, token: string, expiry: Date): Promise<void> {
+    await db
+      .update(users)
+      .set({
+        emailVerificationToken: token,
+        emailVerificationExpiry: expiry,
+      })
+      .where(eq(users.id, id));
+  }
+
+  async setPasswordResetToken(id: string, token: string, expiry: Date): Promise<void> {
+    await db
+      .update(users)
+      .set({
+        passwordResetToken: token,
+        passwordResetExpiry: expiry,
+      })
+      .where(eq(users.id, id));
+  }
+
+  async resetUserPassword(id: string, hashedPassword: string): Promise<void> {
+    await db
+      .update(users)
+      .set({
+        password: hashedPassword,
+        passwordResetToken: null,
+        passwordResetExpiry: null,
+      })
+      .where(eq(users.id, id));
   }
 
   async createLifestyleQuestionnaire(insertQuestionnaire: InsertLifestyleQuestionnaire): Promise<LifestyleQuestionnaire> {

@@ -7,11 +7,13 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { setStoredUser } from "@/lib/auth";
 import { apiRequest } from "@/lib/queryClient";
-import { Loader2, Heart } from "lucide-react";
+import { Loader2, Heart, Mail } from "lucide-react";
 import { Link } from "wouter";
+import { useState } from "react";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -23,6 +25,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 export default function Login() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const [emailNotVerified, setEmailNotVerified] = useState<string | null>(null);
 
   const form = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
@@ -48,17 +51,48 @@ export default function Login() {
         : "/dashboard/non-disabled";
       setLocation(redirectPath);
     },
+    onError: (error: any) => {
+      if (error.emailNotVerified) {
+        setEmailNotVerified(error.email);
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Login failed",
+          description: error.message,
+        });
+      }
+    },
+  });
+
+  const resendVerificationMutation = useMutation({
+    mutationFn: async (email: string) => {
+      const result = await apiRequest("POST", "/api/auth/resend-verification", { email });
+      return result;
+    },
+    onSuccess: (data) => {
+      toast({
+        title: "Verification email sent",
+        description: data.message,
+      });
+    },
     onError: (error: Error) => {
       toast({
         variant: "destructive",
-        title: "Login failed",
+        title: "Failed to send email",
         description: error.message,
       });
     },
   });
 
   const onSubmit = (data: LoginForm) => {
+    setEmailNotVerified(null);
     loginMutation.mutate(data);
+  };
+
+  const handleResendVerification = () => {
+    if (emailNotVerified) {
+      resendVerificationMutation.mutate(emailNotVerified);
+    }
   };
 
   return (
@@ -76,6 +110,29 @@ export default function Login() {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {emailNotVerified && (
+            <Alert className="mb-6">
+              <Mail className="h-4 w-4" />
+              <AlertDescription className="space-y-3">
+                <p className="font-semibold">Email verification required</p>
+                <p className="text-sm">
+                  Please check your email and click the verification link to access your account.
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleResendVerification}
+                  disabled={resendVerificationMutation.isPending}
+                  className="w-full"
+                >
+                  {resendVerificationMutation.isPending && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  Resend Verification Email
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
@@ -102,7 +159,14 @@ export default function Login() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <div className="flex items-center justify-between">
+                      <FormLabel>Password</FormLabel>
+                      <Link href="/forgot-password">
+                        <span className="text-sm text-primary hover:underline cursor-pointer">
+                          Forgot password?
+                        </span>
+                      </Link>
+                    </div>
                     <FormControl>
                       <Input
                         type="password"

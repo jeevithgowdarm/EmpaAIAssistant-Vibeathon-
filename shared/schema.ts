@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, jsonb, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -8,6 +8,11 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   password: text("password").notNull(),
   userType: text("user_type").notNull(), // "disabled" or "non-disabled"
+  emailVerified: boolean("email_verified").notNull().default(false),
+  emailVerificationToken: text("email_verification_token"),
+  emailVerificationExpiry: timestamp("email_verification_expiry"),
+  passwordResetToken: text("password_reset_token"),
+  passwordResetExpiry: timestamp("password_reset_expiry"),
 });
 
 export const lifestyleQuestionnaires = pgTable("lifestyle_questionnaires", {
@@ -45,6 +50,11 @@ export const transcripts = pgTable("transcripts", {
 
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
+  emailVerified: true,
+  emailVerificationToken: true,
+  emailVerificationExpiry: true,
+  passwordResetToken: true,
+  passwordResetExpiry: true,
 });
 
 export const insertLifestyleQuestionnaireSchema = createInsertSchema(lifestyleQuestionnaires).omit({
