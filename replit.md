@@ -216,11 +216,19 @@ EmpaAI is an innovative web application designed to foster inclusion, empathy, a
 - ✅ **Application Running**: Frontend accessible and fully functional
 - ✅ **Email Verification & Password Reset**: Implemented complete email verification and password reset flows
 
-### Email Verification & Password Reset (2025-11-09)
+### Email Verification & Password Reset (2025-11-09) - PRODUCTION-READY
 - **Email Verification**: Users receive verification emails upon signup with 24-hour expiry tokens
 - **Password Reset**: Users can request password reset links with 1-hour expiry tokens
 - **Beautiful Email Templates**: Professional HTML emails with EmpaAI branding
 - **Dev Mode**: Works without SMTP configuration (prints links to console for testing)
+- **Security Features**:
+  - ✅ **Required Email Verification**: Users MUST verify email before accessing protected routes
+  - ✅ **No Session on Signup**: Signup no longer creates session; users must verify email and login
+  - ✅ **Login Blocks Unverified Users**: 403 error with helpful UI for resending verification
+  - ✅ **Defense-in-Depth**: RequireAuth middleware enforces emailVerified check
+  - ✅ **Account Enumeration Prevention**: Normalized responses on resend-verification endpoint
+  - ✅ **Token Expiry**: Verification tokens expire in 24h, password reset in 1h
+  - ✅ **Secure Token Generation**: Crypto-random 32-byte tokens
 - **New Routes**:
   - `/verify-email` - Email verification page
   - `/forgot-password` - Request password reset page
